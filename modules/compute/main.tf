@@ -53,7 +53,7 @@ resource "aws_instance" "webserver" {
   # to execute the script on EC2 resource for installing Apache package
   provisioner "remote-exec"{
     inline = [ 
-      "sudo yum update -y && sudo amazon-linux-extras install ansible 2 -y",
+      "sudo yum update -y && sudo amazon-linux-extras install ansible2 -y",
       "sleep 60s",
       "ansible-playbook install_apache.yaml"
      ]
