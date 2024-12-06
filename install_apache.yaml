@@ -1,0 +1,33 @@
+---
+- name: Web Server
+  hosts: localhost
+  remote_user: ec2-user
+  become: true
+
+  tasks:
+  - name: Install apache packages 
+    yum:
+      name: httpd
+      state: latest
+
+  - name: Extract master.zip into /tmp
+    ansible.builtin.unarchive:
+      src: https://github.com/wessamabdelwahab/CSCC1030/archive/master.zip
+      dest: /tmp
+      remote_src: yes
+
+  - name: Copy CSCC1030-master directory contents into /var/www/html
+    ansible.builtin.copy:
+      src: /tmp/CSCC1030-master/
+      dest: /var/www/html/
+
+  - name: Ensure httpd is running
+    service:
+      name: httpd 
+      state: started
+
+  handlers:
+    - name: Restart apache
+      ansible.builtin.service:
+        name: httpd
+        state: restarted
